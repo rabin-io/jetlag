@@ -12,6 +12,8 @@ rh_labs:
 - byol
 
 labs:
+  byol:
+    ntp_server: clock2.bos.redhat.com
   alias:
     dns:
     - 10.19.96.1

@@ -1,0 +1,91 @@
+all:
+  vars:
+    allocation_node_count: 7
+    bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+    bmc_address_ip: "{{ bmc_address | ansible.utils.ipv4 | ternary(bmc_address, lookup('community.general.dig', bmc_address)) }}"
+    bmc_password: calvin
+    bmc_user: root
+    boot_iso: discovery.iso
+    dns1: 10.47.242.10
+    dns2: 10.38.5.26
+    gateway: 10.46.255.254
+    controlplane_network_api: 10.46.255.248
+    controlplane_network_ingress: 10.46.255.249
+    supermicro_nodes: false
+    vendor: Dell
+    ansible_ssh_user: root
+    base_dns_name: release-ci.cnv-qe.rhood.us
+    cluster_name: rabin
+    hostname: "{{ inventory_hostname }}"
+  children:
+    bastion:
+      hosts:
+        cnvqe-30.lab.eng.tlv2.redhat.com:
+          bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+    controlplane:
+      vars:
+          role: master
+          network_interface: eno3
+          lab_interface: eno8303
+          network_prefix: 21
+      hosts:
+        cnvqe-37.lab.eng.tlv2.redhat.com:
+          # bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+          install_disk: /dev/disk/by-id/wwn-0x62cea7f0d294ef002c8c96db43cec01a
+          ip: 10.46.248.8
+          # lab_interface: eno8303
+          lab_mac: ec:2a:72:33:15:f0
+          # network_interface: eno3
+          network_mac: 78:ac:44:5e:a2:62
+          # network_prefix: 21
+        cnvqe-38.lab.eng.tlv2.redhat.com:
+          # bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+          install_disk: /dev/disk/by-id/wwn-0x62cea7f0d2870f002c84c974fe438c73
+          ip: 10.46.248.9
+          # lab_interface: eno8303
+          lab_mac: ec:2a:72:33:16:c8
+          # network_interface: eno3
+          network_mac: 78:ac:44:5d:f5:74
+          # network_prefix: 21
+        cnvqe-39.lab.eng.tlv2.redhat.com:
+          # bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+          install_disk: /dev/disk/by-id/wwn-0x62cea7f0d29b69002c3ee5c1ed4928c1
+          ip: 10.46.248.10
+          # lab_interface: eno8303
+          lab_mac: ec:2a:72:51:0a:f4
+          # network_interface: eno3
+          network_mac: 78:ac:44:5e:96:c8
+          # network_prefix: 21
+    worker:
+      vars:
+          role: worker
+          network_prefix: 21
+          network_interface: eno3
+          lab_interface: eno8303
+      hosts:
+        cnvqe-40.lab.eng.tlv2.redhat.com:
+          #bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+          install_disk: /dev/disk/by-id/wwn-0x62cea7f0d28720002cc13f9c778a94e9
+          ip: 10.46.248.11
+          # lab_interface: eno8303
+          lab_mac: ec:2a:72:33:17:2a
+          # network_interface: eth0
+          network_mac: b4:96:91:f2:d3:90
+        cnvqe-41.lab.eng.tlv2.redhat.com:
+          #bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+          install_disk: /dev/disk/by-id/wwn-0x62cea7f0d28728002cc11df025e6a783
+          ip: 10.46.248.12
+          # lab_interface: eno8303
+          lab_mac: c8:4b:d6:8d:78:2e
+          network_mac: 00:62:0b:2f:2b:50
+          # network_prefix: 21
+        cnvqe-42.lab.eng.tlv2.redhat.com:
+          #bmc_address: "{{ inventory_hostname | split('.') | first + '-drac.mgmt.lab.eng.tlv2.redhat.com'}}"
+          install_disk: /dev/disk/by-id/wwn-0x62cea7f0d28705002cba672f62a7a62d
+          ip: 10.46.248.13
+          # lab_interface: eno8303
+          lab_mac: c8:4b:d6:8d:78:2e
+          # network_interface: eno3
+          network_mac: ff:ac:44:5e:93:ff
+          # network_mac: 78:ac:44:5e:93:fa
+          # network_prefix: 21
